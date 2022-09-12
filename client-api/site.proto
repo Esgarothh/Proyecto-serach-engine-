@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+message Site {
+	string id = 1;
+	string titulo = 2;
+	string descripcion = 3;
+	string url = 4;
+}
+
+service SiteService {
+	rpc GetAllSite (Empty) returns (SiteList) {}
+}
+
+message Empty {}
+
+message SiteList {
+	repeated Site site = 1;
+}	
