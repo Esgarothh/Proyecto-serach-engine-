@@ -3,6 +3,8 @@ import requests
 from requests.utils import quote
 import json
 import re
+#https://hackersandslackers.com/extract-data-from-complex-json-python/
+#https://github.com/LIAAD/yake/search?q=url
 
 def json_extract(obj, key):
     """Recursively fetch values from nested JSON."""
