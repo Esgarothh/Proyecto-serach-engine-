@@ -11,7 +11,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-0-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8000/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8000/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8000:8000"
   redis-node1:
@@ -24,7 +24,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-1-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8001/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8001/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8001:8001"
   redis-node2:
@@ -37,7 +37,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-2-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8002/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8002/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8002:8002"
   redis-node3:
@@ -50,7 +50,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-3-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8003/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8003/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8003:8003"
   redis-node4:
@@ -63,7 +63,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-4-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8004/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8004/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8004:8004"
   redis-node5:
@@ -76,7 +76,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis-node-5-data:/var/lib/redis
-      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8005/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./cluster/8005/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8005:8005"
     expose:
