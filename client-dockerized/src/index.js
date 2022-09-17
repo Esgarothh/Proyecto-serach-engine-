@@ -1,35 +1,32 @@
-const RedisClustr = require('redis-clustr');
-const RedisClient = require('redis');
-const express = require("express");
-const axios = require("axios");
+const Redis = require('ioredis');
 
-const app = express();
-const client = new RedisClustr({
-  servers: [
+const redisDemo = async () => {
+  
+  const redisClient = new Redis.Cluster([
     {
-    host: '172.20.0.31',
-    port: 8000,
+      port: 8000,
+      host: "172.20.0.31",
     },
     {
-      host: '172.20.0.32',
       port: 8001,
+      host: "172.20.0.32",
     },
     {
-      host: '172.20.0.33',
       port: 8002,
-    }
-  ],
-  createClient: function(port, host) {
-    // this is the default behaviour
-    return RedisClient.createClient(port, host);
-  }
-});
+      host: "172.20.0.33",
+    },
+  ]);
 
+  // Set key "myname" to have value "Simon Prickett".
+  await redisClient.set('myname', 'Simon Prickett');
 
-// Get all characters
-app.get("/character", async (req, res, next) => {
-  const response = await axios.get("https://rickandmortyapi.com/api/character/");
-  res.json(response.data);
-});
-app.listen(3000);
-console.log("server listen on port 3000");
+  // Get the value held at key "myname" and log it.
+  const value = await redisClient.get('myname');
+  console.log(value);
+  const value2  = await redisClient.set('nombre', 'matias');
+  console.log(value2);
+  // Disconnect from Redis.
+  redisClient.quit();
+};
+
+redisDemo();

@@ -79,6 +79,8 @@ services:
       - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8005/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "8005:8005"
+    expose:
+      - 8005
   api:
     build: .
     container_name: api
@@ -88,7 +90,7 @@ services:
         ipv4_address: 172.20.0.10
     command: /bin/sh -c 'nodemon -e js,html src/index.js'
     ports:
-      - "3000:3000"
+      - "8080:8080"
     volumes:
       - .:/src
       - nodemodules:/src/node_modules
