@@ -1,0 +1,126 @@
+version: '3.8'
+services:
+    #-d --net=host --name myredis-0 redis redis-server /usr/local/etc/redis/redis.conf
+  redis-node0:
+    image: redis
+    container_name: redis-node0
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.31
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-0-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8000/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8000:8000"
+  redis-node1:
+    image: redis
+    container_name: redis-node1
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.32
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-1-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8001/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8001:8001"
+  redis-node2:
+    image: redis
+    container_name: redis-node2
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.33
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-2-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8002/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8002:8002"
+  redis-node3:
+    image: redis
+    container_name: redis-node3
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.34
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-3-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8003/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8003:8003"
+  redis-node4:
+    image: redis
+    container_name: redis-node4
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.35
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-4-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8004/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8004:8004"
+  redis-node5:
+    image: redis
+    container_name: redis-node5
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.36
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis-node-5-data:/var/lib/redis
+      - /Users/ketz/Documents/GitHub/Tarea1-Distribuidos/cluster/8005/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "8005:8005"
+  api:
+    build: .
+    container_name: api
+    restart: unless-stopped
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.10
+    command: /bin/sh -c 'nodemon -e js,html src/index.js'
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/src
+      - nodemodules:/src/node_modules
+    depends_on:
+      - redis-cluster
+
+  redis-cluster:
+    image: redis
+    command: redis-cli --cluster create 172.20.0.31:8000 172.20.0.32:8001 172.20.0.33:8002 172.20.0.34:8003 172.20.0.35:8004 172.20.0.36:8005 --cluster-replicas 1 --cluster-yes
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.30
+    depends_on:
+      - redis-node0
+      - redis-node1
+      - redis-node2
+      - redis-node3
+      - redis-node4
+      - redis-node5
+
+volumes:
+  redis-node-0-data:
+  redis-node-1-data:
+  redis-node-2-data:
+  redis-node-3-data:
+  redis-node-4-data:
+  redis-node-5-data:
+  nodemodules:
+
+networks:
+  app_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

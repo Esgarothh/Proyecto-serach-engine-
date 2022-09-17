@@ -1,0 +1,21 @@
+{
+    "name": "nodejs-redis-caching",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.26.1",
+        "express": "^4.17.3",
+        "redis": "^4.0.4",
+        "redis-clustr": "^1.7.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}

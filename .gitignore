@@ -155,3 +155,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 .DS_Store
+
+
+/client-dockerized/node_modules
+client-dockerized/package-lock.json

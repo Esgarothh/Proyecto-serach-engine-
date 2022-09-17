@@ -1,6 +1,8 @@
 sudo docker run -v "$PWD"/redis.conf:/usr/local/etc/redis/redis.conf -d --net=host --name myredis-0 redis redis-server /usr/local/etc/redis/redis.conf
 
-redis-cli --cluster create 0.0.0.0:8000 localhost:8001 127.0.0.1:8002 127.0.0.1:8003 127.0.0.1:8004 127.0.0.1:8005 --cluster-replicas 1
+docker exec -it api sh
+
+redis-cli --cluster create 127.0.0.1:8000 localhost:8001 localhost:8002 localhost:8003 localhost:8004 localhost:8005 --cluster-replicas 1
 
 
 
