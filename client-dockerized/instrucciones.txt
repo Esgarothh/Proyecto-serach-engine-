@@ -1,6 +1,6 @@
-1. abrir terminal en carpeta "client-dockerized"
+1. abrir terminal en carpeta "client-dockerized".
 2. ejecutar comando: docker-compose up -d
-3. Listo
+3. Listo.
 
 Para revisar base de datos:
 
@@ -9,5 +9,5 @@ En terminal:
 docker exec -it redis-node0 sh
 redis-cli -c -p 8000
 
-(realizar consulta)
+(realizar consulta).
 
