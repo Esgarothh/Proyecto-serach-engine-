@@ -1,8 +1,26 @@
-const client = require("./client");
+let client = require("./client");
+module.exports = {
+	getallsite: function () {
+		return client.getAllSite({}, (error, site) => {
+			if (!error) {
+				console.log("successfully fetched todo lists");
+				console.log(JSON.stringify(site, null, 4));
+			}
+		});
+	},
 
-client.getAllSite({}, (error, site) => {
-	if (!error) {
-		console.log("successfully fetched todo lists");
-		console.log(JSON.stringify(site, null, 4));
-	}
-});
+	getonesite: function () {
+		return client.getOneSite({}, (error, site) => {
+			if (!error) {
+				console.log(site.array[0]);
+			} else console.log(error);
+		});
+	},
+	searchbyword: function (word) {
+		return client.searchByWord({ word }, (error, site) => {
+			if (!error) {
+				console.log(site.array);
+			} else console.log(error);
+		});
+	},
+};

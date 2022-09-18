@@ -25,8 +25,7 @@ def connect():
         # display the PostgreSQL database server version
         db_version = cur.fetchone()
         print(db_version)
-        cur.execute(
-            """INSERT INTO testtable(columna1) VALUES (%s);""", ("seis",))
+        cur.execute("""INSERT INTO testtable(columna1) VALUES (%s);""", ("seis",))
 
         conn.commit()
         count = cur.rowcount
