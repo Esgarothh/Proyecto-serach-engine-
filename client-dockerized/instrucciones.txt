@@ -14,3 +14,8 @@ redis-cli -c -p 8000
 
 (realizar consulta).
 
+WARNING! La memoria máxima de cada nodo cache es de 250mb, tener en cuenta al utilizarlo.
+Si es necesario, disminuir o aumentar esta cantidad en los archivos redis.conf de la carpeta "Cluster".
+
+Política de remoción: volatile-lru.
+
