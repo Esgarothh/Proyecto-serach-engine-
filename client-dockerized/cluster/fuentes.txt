@@ -4,3 +4,5 @@ https://github.com/FaztWeb/nodejs-redis-caching/blob/master/src/index.js
 https://www.npmjs.com/package/redis-cluster
 https://github.com/docker-library/redis/issues/67
 https://www.dltlabs.com/blog/how-to-setup-configure-a-redis-cluster-easily-573120
+
+https://developer.redis.com/develop/node/nodecrashcourse/redisandnodejs/?s=ioredis
