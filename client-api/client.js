@@ -28,7 +28,21 @@ const client = new SiteService(
 module.exports = client;
 var metodos = require("./metodos");
 
-let dato = {
-	site: ["domain"],
-};
-metodos.searchbyword(dato.site);
+const readline = require("readline");
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout,
+});
+
+rl.question("What is your name ? ", function (name) {
+	let dato = {
+		site: [name],
+	};
+	console.log(name);
+	metodos.searchbyword(dato.site);
+});
+
+rl.on("close", function () {
+	console.log("\nBYE BYE !!!");
+	process.exit(0);
+});

@@ -55,6 +55,23 @@ function DBsearchKeyword(word, callback) {
 		return callback(stuff_i_want);
 	});
 }
+function DBsearchByKeyword(word, callback) {
+	var sql =
+		"SELECT * FROM datos WHERE id in (SELECT id FROM keywords WHERE keyword='" +
+		word +
+		"')";
+
+	client.query(sql, function (err, results) {
+		if (err) {
+			throw err;
+		}
+		console.log(results.rows);
+		stuff_i_want = results.rows; //
+		return callback(stuff_i_want);
+	});
+}
+
+// select * from datos where id in (select id from keywords where keyword='domain');
 
 //usage
 
@@ -79,7 +96,7 @@ server.addService(siteProto.SiteService.service, {
 	searchByWord: (call, callback) => {
 		let stuff = { array: [] };
 		word = call.request.word;
-		DBsearchKeyword(word, function (result) {
+		DBsearchByKeyword(word, function (result) {
 			result.forEach(function (item, index) {
 				stuff.array.push(item);
 			});

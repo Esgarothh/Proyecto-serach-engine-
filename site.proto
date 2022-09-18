@@ -21,7 +21,7 @@ message keywordIdList{
 service SiteService {
 	rpc GetAllSite (Empty) returns (SiteList) {}
 	rpc getOneSite (Empty) returns (SiteList) {}
-	rpc searchByWord (word) returns (keywordIdList) {}
+	rpc searchByWord (word) returns (SiteList) {}
 }
 
 message Empty {}
