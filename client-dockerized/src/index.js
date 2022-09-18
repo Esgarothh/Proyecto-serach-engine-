@@ -15,6 +15,18 @@ const redisDemo = async () => {
       port: 8002,
       host: "172.20.0.33",
     },
+    {
+      port: 8003,
+      host: "172.20.0.34",
+    },
+    {
+      port: 8004,
+      host: "172.20.0.35",
+    },
+    {
+      port: 8005,
+      host: "172.20.0.36",
+    },
   ]);
 
   // Set key "myname" to have value "Simon Prickett".
