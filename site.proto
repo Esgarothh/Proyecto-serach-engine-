@@ -1,11 +1,26 @@
 syntax = "proto3";
-
-message Site {
+message Site {   //declara la variable esquema
 	string id = 1;
 	string titulo = 2;
 	string descripcion = 3;
 	string url = 4;
 }
+message word {
+	string word = 1;
+}
+message SiteList {   //repeated permite
+					//repetir libremente
+					//el contenido
+	repeated Site array = 1;
+}	
+service SiteService {  //servicios o metodos
+	rpc GetAllSite (Empty) returns (SiteList) {}
+	rpc getOneSite (Empty) returns (SiteList) {}
+	rpc searchByWord (word) returns (SiteList) {}
+}
+
+
+
 
 message keywordId{
 	string id = 1;
@@ -18,18 +33,6 @@ message keywordIdList{
 	repeated keywordId array = 1;
 }
 
-service SiteService {
-	rpc GetAllSite (Empty) returns (SiteList) {}
-	rpc getOneSite (Empty) returns (SiteList) {}
-	rpc searchByWord (word) returns (SiteList) {}
-}
 
 message Empty {}
 
-message word {
-	string word = 1;
-}
-
-message SiteList {
-	repeated Site array = 1;
-}	

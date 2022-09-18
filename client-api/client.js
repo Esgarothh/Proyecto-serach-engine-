@@ -132,9 +132,22 @@ rl.question("Buscar por keyword: ? ", function (name) {
 			getSitioBy(name);
 		} else {
 			console.log("hola:" + name);
-			let query = metodos.searchbyword(dato.site);
-			console.log(query);
-			setValue(name, JSON.stringify(query));
+			let send = { site: [] };
+			send.site.push(name);
+			client.searchByWord({ send }, (error, site) => {
+				if (!error) {
+					let pararetornar = "";
+					values = site.array;
+					values.forEach(function (item) {
+						pararetornar = item;
+					});
+					console.log(pararetornar); // I WANT TO SEND THIS VALUE - PARARETORNAR
+				} else console.log(error);
+			});
+
+			// OUT HERE
+			console.log(respuesta2);
+			//setValue(name, JSON.stringify(query));
 		}
 	})();
 });
