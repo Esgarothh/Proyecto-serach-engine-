@@ -2,9 +2,6 @@
 2. ejecutar comando: docker-compose up -d
 3. Listo.
 
-(A veces al crear la api no se instalan correctamente todas las librerias 
-de package.json, en caso de faltar alguna, abrir terminal en la api, instalar y reiniciar)
-
 Para revisar base de datos:
 
 En terminal:
