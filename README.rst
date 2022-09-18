@@ -16,6 +16,3 @@ Instrucciones
     psql -U my_user -d my_database
     password123
     ```
-
-CREATE TABLE  datos (id int NOT NULL,titulo VARCHAR(200) NOT NULL,descripcion VARCHAR(500) NOT NULL,url VARCHAR(50) NOT NULL,PRIMARY KEY (id));
-CREATE TABLE keywords(id int NOT NULL,keyword VARCHAR(100) NOT NULL ,PRIMARY KEY (id));     
