@@ -19,10 +19,13 @@ module.exports = {
 	searchbyword: function (word) {
 		return client.searchByWord({ word }, (error, site) => {
 			if (!error) {
+				let pararetornar = "";
 				values = site.array;
 				values.forEach(function (item, index) {
 					console.log(item);
+					pararetornar = item;
 				});
+				return pararetornar;
 			} else console.log(error);
 		});
 	},
