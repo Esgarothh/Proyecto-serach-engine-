@@ -1,9 +1,8 @@
 FROM node
-
-RUN npm global add nodemon
 WORKDIR /src
-ADD package*.json ./
-RUN npm install
 COPY . .
-
+ADD package*.json ./
+RUN npm install nodemon:latest
+RUN npm install ioredis:latest
+RUN npm install
 CMD ["node", "index.js"]
