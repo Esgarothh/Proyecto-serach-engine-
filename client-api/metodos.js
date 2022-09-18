@@ -23,7 +23,7 @@ module.exports = {
 				values = site.array;
 				values.forEach(function (item, index) {
 					console.log(item);
-					pararetornar += item;
+					pararetornar = item;
 				});
 				return pararetornar;
 			} else console.log(error);
