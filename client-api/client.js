@@ -54,16 +54,10 @@ const redisClient = new Redis.Cluster([
 	},
 ]);
 const getSitioBy = async (word) => {
-	// Set key "myname" to have value "Simon Prickett".
-	await redisClient.set("myname", "Simon Prickett");
-
-	// Get the value held at key "myname" and log it.
 	const value = await redisClient.get(word);
+
 	console.log(value);
-	const value2 = await redisClient.set("nombre", "matias");
-	console.log(value2);
 	// Disconnect from Redis.
-	redisClient.quit();
 };
 
 const setValue = async (key, value) => {
@@ -75,9 +69,32 @@ const setValue = async (key, value) => {
 
 const existe = async (key) => {
 	// Set key "myname" to have value "Simon Prickett".
-	await redisClient.set(key, value);
+	await redisClient.set("myname", "Simon Prickett");
+	const ret = await redisClient.exists(key);
+	let tipo = typeof ret;
+	console.log("ret=" + ret + "tipo:" + tipo);
+	if (ret === 0) {
+		console.log("ret falso");
+		return false;
+	}
+	console.log("ret true");
+	return true;
+};
 
-	redisClient.quit();
+const consultando = async (req, res) => {
+	const reply = await client.get(req);
+	if (reply) return res.send(JSON.parse(reply));
+
+	// consulto a base de datos si no esta en cache.
+
+	// Saving the results in Redis.
+	const saveResult = await client.set(
+		"character",
+		JSON.stringify(response.data)
+	);
+	console.log(saveResult);
+	// resond to client
+	res.send(response.data);
 };
 
 const redisDemo = async (word) => {
@@ -105,9 +122,21 @@ rl.question("Buscar por keyword: ? ", function (name) {
 	let dato = {
 		site: [name],
 	};
-	redisDemo("myname");
-	console.log(name);
-	metodos.searchbyword(dato.site);
+	let ret;
+	const resultado = existe(name);
+	(async () => {
+		ret = await resultado;
+
+		if (ret === true) {
+			console.log("entre");
+			getSitioBy(name);
+		} else {
+			console.log("hola:" + name);
+			let query = metodos.searchbyword(dato.site);
+			console.log(query);
+			setValue(name, JSON.stringify(query));
+		}
+	})();
 });
 
 rl.on("close", function () {
