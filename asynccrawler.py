@@ -1,16 +1,10 @@
 import asyncio
-from queue import Full
 import aiohttp
-import time
 from unittest import expectedFailure
-import requests
-import yake
 from requests.exceptions import Timeout
-from bs4 import BeautifulSoup, SoupStrainer
+from bs4 import BeautifulSoup
 from alive_progress import alive_bar
 import psycopg2
-# archivo = open("1FULL.txt", 'w')
-# archivo2 = open("2ID-DOMAIN.txt", 'w')
 
 full = {}
 keys = {}
@@ -88,26 +82,6 @@ async def sopa(s, url, cont):
         pass
 
 
-async def get(url, session, cont):
-    try:
-        async with session.get(url=url) as response:
-            resp = await response.read()
-
-            # resp es el content of page
-            return await sopa(resp, url, cont)
-
-    except Exception as e:
-        pass
-
-
-async def main(urls, start, max):
-    timeout = aiohttp.ClientTimeout(total=30)
-    async with aiohttp.ClientSession(timeout=timeout) as session:
-        ret = await asyncio.gather(*[get(urls[i], session, i) for i in range(start, max, 1)])
-    print("Finalized all. Return is a list of len {} outputs.".format(
-        len(ret))+"max="+str(max))
-
-
 async def fetch_all(ses, urls, offset):
     tasks = []
     cont = 0+(offset*1000)+1
@@ -123,7 +97,7 @@ async def fetch_all(ses, urls, offset):
 lista_url = urlToList()
 
 
-async def main2(offset):
+async def main(offset):
     timeout = aiohttp.ClientTimeout(total=30)
     async with aiohttp.ClientSession(timeout=timeout) as session:
         r = await fetch_all(session, lista_url, offset)
@@ -131,18 +105,6 @@ async def main2(offset):
 
 a = 0
 while a < 500:
-    asyncio.run(main2(a))
+    asyncio.run(main(a))  # inicio programa, carga 1000 URL a la vez
     a += 1
     print(str(1000*a)+"done")
-    with open('1FULL.txt', 'w') as f:
-        f.writelines('{}:{}'.format(k, v) for k, v in full.items())
-    with open('2ID-DOMAIN.txt', 'w') as f:
-        f.writelines('{}:{}\n'.format(k, v) for k, v in keys.items())
-
-
-max = 1000
-start = 0
-while max <= 1:
-    asyncio.run(main(lista_url, start, max))
-    start = max+1
-    max += 1000
