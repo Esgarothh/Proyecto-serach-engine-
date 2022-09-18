@@ -65,9 +65,8 @@ function DBsearchByKeyword(word, callback) {
 		if (err) {
 			throw err;
 		}
-		console.log(results.rows);
 		stuff_i_want = results.rows; //
-		return callback(stuff_i_want);
+		callback(stuff_i_want);
 	});
 }
 
@@ -94,16 +93,20 @@ server.addService(siteProto.SiteService.service, {
 		//callback(null, dato);
 	},
 	searchByWord: (call, callback) => {
-		let stuff = { array: [] };
-		word = call.request.word;
-		DBsearchByKeyword(word, function (result) {
-			result.forEach(function (item, index) {
-				stuff.array.push(item);
-			});
+		if (call) {
+			let stuff = { array: [] };
+			word = call.request.word;
 
-			console.log(stuff);
-			callback(null, stuff);
-		});
+			console.log(call.request);
+			DBsearchByKeyword(word, function (result) {
+				result.forEach(function (item, index) {
+					stuff.array.push(item);
+				});
+				callback(null, stuff);
+			});
+		} else {
+			console.log("ERROR");
+		}
 	},
 });
 
