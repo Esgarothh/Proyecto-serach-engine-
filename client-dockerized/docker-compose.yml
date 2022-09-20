@@ -81,21 +81,6 @@ services:
       - "8005:8005"
     expose:
       - 8005
-  api:
-    build: .
-    container_name: api
-    restart: unless-stopped
-    networks:
-      app_subnet:
-        ipv4_address: 172.20.0.10
-    command: /bin/sh -c 'npm i ioredis && nodemon -e js,html src/index.js '
-    ports:
-      - "8080:8080"
-    volumes:
-      - .:/src
-      - nodemodules:/src/node_modules
-    depends_on:
-      - redis-cluster
 
   redis-cluster:
     image: redis
@@ -118,7 +103,6 @@ volumes:
   redis-node-3-data:
   redis-node-4-data:
   redis-node-5-data:
-  nodemodules:
 
 networks:
   app_subnet:

@@ -1,13 +1,11 @@
 const grpc = require("@grpc/grpc-js");
 var protoLoader = require("@grpc/proto-loader");
 const PROTO_PATH = ".././site.proto";
-
 const http = require("http");
 const webclient = require("./index.controller.js");
-
 const host = "localhost";
 const port = 8000;
-
+const Redis = require("ioredis");
 const options = {
 	keepCase: true,
 	longs: String,
@@ -17,15 +15,11 @@ const options = {
 };
 
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, options);
-
 const SiteService = grpc.loadPackageDefinition(packageDefinition).SiteService;
-
 const client = new SiteService(
 	"localhost:50051",
 	grpc.credentials.createInsecure()
 );
-
-const Redis = require("ioredis");
 
 const redisClient = new Redis.Cluster([
 	{
@@ -53,6 +47,10 @@ const redisClient = new Redis.Cluster([
 		host: "172.20.0.36",
 	},
 ]);
+
+const setValue = async (key, value) => {
+	await redisClient.set(key, value);
+};
 const getSitioBy = async (word) => {
 	const value = await redisClient.get(word);
 
@@ -61,14 +59,8 @@ const getSitioBy = async (word) => {
 	// Disconnect from Redis.
 };
 
-const setValue = async (key, value) => {
-	// Set key "myname" to have value "Simon Prickett".
-	await redisClient.set(key, value);
-};
-
 const existe = async (key) => {
-	// Set key "myname" to have value "Simon Prickett".
-	console.log("hello");
+	+console.log("hello");
 	const ret = await redisClient.exists(key);
 	let tipo = typeof ret;
 	console.log("ret=" + ret + "tipo:" + tipo);
@@ -80,22 +72,6 @@ const existe = async (key) => {
 	return true;
 };
 
-const consultando = async (req, res) => {
-	const reply = await client.get(req);
-	if (reply) return res.send(JSON.parse(reply));
-
-	// consulto a base de datos si no esta en cache.
-
-	// Saving the results in Redis.
-	const saveResult = await client.set(
-		"character",
-		JSON.stringify(response.data)
-	);
-	console.log(saveResult);
-	// resond to client
-	res.send(response.data);
-};
-
 const cleanCache = async (word) => {
 	await redisClient.flushall();
 };
@@ -104,15 +80,14 @@ var metodos = require("./metodos");
 
 const readline = require("readline");
 const { type } = require("os");
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout,
-});
+const { timeout } = require("nodemon/lib/config/index.js");
+
+
 const searchitems = async (req, res) => {
 	let searchbox =
 		'<div class="search-container"><form action="/search" method="POST"><input type="text" placeholder="Search.." name="q"> <button type="submit">Submit</button> </form> </div>';
-
-	if (req.method === "POST") {
+	let tiempoinicial = Date.now();
+	if (req.method === "POST" && req.body.q != "") {
 		let name = req.body.q;
 		let dato = {
 			site: [name],
@@ -126,8 +101,13 @@ const searchitems = async (req, res) => {
 		if (ret === true) {
 			console.log("entre");
 			let retorno = await getSitioBy(estring);
+			let tiempofinal = Date.now() - tiempoinicial;
 			let lineacache =
-				searchbox + "<h1> Busqueda realizada en cache:</h1>" + retorno;
+				searchbox +
+				"<h1>" +
+				tiempofinal +
+				" Busqueda realizada en cache:</h1>" +
+				retorno;
 			res.set("Content-Type", "text/html");
 			return res.status(200).send(Buffer.from(lineacache));
 		} else {
@@ -141,13 +121,31 @@ const searchitems = async (req, res) => {
 					console.log(data);
 					if (data["product"] !== null && items.array.length != 0) {
 						setValue(name, data);
-
-						let id = JSON.stringify(items.array[0].id);
-						let titulo = JSON.stringify(items.array[0].titulo);
-						let descripcion = JSON.stringify(items.array[0].descripcion);
-						let url = JSON.stringify(items.array[0].url);
+						let a = "";
+						items.array.forEach(function (item, index) {
+							pararetornar = item;
+							let end = "</table>";
+							let id = JSON.stringify(item.id);
+							let titulo = JSON.stringify(item.titulo);
+							let descripcion = JSON.stringify(item.descripcion);
+							let url = JSON.stringify(item.url);
+							let start =
+								"<li><h3>" +
+								titulo +
+								"</h3><p>" +
+								descripcion +
+								"</p><a>" +
+								url +
+								"</a></li>";
+							a += start;
+						});
+						let tiempofinal = Date.now() - tiempoinicial;
 						let linea =
-							searchbox + "<h1> Busqueda realizada en bdd:</h1>" + url;
+							searchbox +
+							"<h1>" +
+							tiempofinal +
+							" Busqueda realizada en bdd:</h1>" +
+							a;
 						res.set("Content-Type", "text/html");
 						return res.status(200).send(Buffer.from(linea));
 					} else {

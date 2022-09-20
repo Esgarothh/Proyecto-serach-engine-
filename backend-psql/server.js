@@ -38,23 +38,11 @@ function get_info(callback) {
 		if (err) {
 			throw err;
 		}
-		stuff_i_want = results.rows[0]; //
+		stuff_i_want = results.rows[0];
 		return callback(stuff_i_want);
 	});
 }
 
-function DBsearchKeyword(word, callback) {
-	var sql = "SELECT id FROM keywords WHERE keyword='" + word + "'";
-
-	client.query(sql, function (err, results) {
-		if (err) {
-			throw err;
-		}
-		console.log(results.rows);
-		stuff_i_want = results.rows; //
-		return callback(stuff_i_want);
-	});
-}
 function DBsearchByKeyword(word, callback) {
 	var sql =
 		"SELECT * FROM datos WHERE id in (SELECT id FROM keywords WHERE keyword='" +
@@ -70,10 +58,6 @@ function DBsearchByKeyword(word, callback) {
 	});
 }
 
-// select * from datos where id in (select id from keywords where keyword='domain');
-
-//usage
-
 server.addService(siteProto.SiteService.service, {
 	getAllSite: (_, callback) => {
 		dato.array.push({ id: "3" });
@@ -85,12 +69,7 @@ server.addService(siteProto.SiteService.service, {
 		get_info(function (result) {
 			stuff.array.push(result);
 			callback(null, stuff);
-
-			//rest of your code goes in here
 		});
-		//console.log("i got this:" + stuff);
-		//dato = dato.array.push(stuff_i_want);
-		//callback(null, dato);
 	},
 	searchByWord: (call, callback) => {
 		if (call) {
