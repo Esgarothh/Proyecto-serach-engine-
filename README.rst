@@ -7,10 +7,13 @@ https://docs.readthedocs.io/en/stable/tutorial/
 
 
 Instrucciones 
+
+Iniciar PSQL
     
-    Iniciar PSQL
+```  
 Se utiliza el comando
 sudo docker run --name postgresql -p 5432:5432 -e
 POSTGRESQL_USERNAME=my_user -e POSTGRESQL_PASSWORD=password123 -e
 POSTGRESQL_DATABASE=my_database -v /home/esgaroth/databasePsql:/bitnami/postgresql
 bitnami/postgresql:latest
+```
